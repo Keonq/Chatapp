@@ -7,6 +7,8 @@ export const friendsStyles = {
     backgroundColor: '#fce4ec',
     fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     minWidth: '1200px', // 桌面端最小宽度
+    width: '100vw', // 占据整个视口宽度
+    boxSizing: 'border-box', // 盒模型
   },
 
   headerStyle: {
@@ -17,6 +19,7 @@ export const friendsStyles = {
     borderBottom: '1px solid #f8bbd9',
     boxShadow: '0 2px 4px rgba(233, 30, 99, 0.1)',
     minHeight: '70px', // 固定头部高度
+    flexShrink: 0, // 防止头部压缩
   },
 
   logoStyle: {
@@ -31,6 +34,7 @@ export const friendsStyles = {
     fontSize: '18px',
     fontWeight: 'bold',
     marginRight: '16px', // 调整间距
+    flexShrink: 0, // 防止logo变形
   },
 
   contactInfoStyle: {

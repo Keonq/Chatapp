@@ -16,12 +16,14 @@ const FriendsList = ({ friends, selectedFriend, onFriendSelect, searchQuery, onS
   };
 
   const searchInputStyle = {
-    width: '100%',
+    width: '80%',
     padding: '12px 16px',
     border: '1px solid #f8bbd9',
     borderRadius: '20px',
     fontSize: '14px',
     outline: 'none',
+    marginLeft: '10%',
+    marginRight: '10%',
     backgroundColor: '#fce4ec',
     transition: 'border-color 0.2s ease',
   };
