@@ -75,6 +75,12 @@ const DeleteFriendConfirm = ({ isVisible, onClose, onConfirm, friendName }) => {
     color: '#ffffff',
   };
 
+  const FriendButtonStyle = {
+    ...buttonStyle,
+    backgroundColor: '#2196f3',
+    color: '#ffffff',
+  }
+
   return (
     <div style={overlayStyle} onClick={onClose}>
       <div style={modalStyle} onClick={(e) => e.stopPropagation()}>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PhotoSelect from './PhotoSelect.jsx';
 import DeleteFriendConfirm from './DeleteFriendConfirm.jsx';
 
-const FriendDetail = ({ selectedFriend, onSendMessage, onAvatarChange }) => {
+const FriendDetail = ({ selectedFriend, onSendMessage, onAvatarChange, friendRequests, onAddFriend }) => {
   const [showPhotoSelect, setShowPhotoSelect] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
@@ -88,6 +88,21 @@ const FriendDetail = ({ selectedFriend, onSendMessage, onAvatarChange }) => {
     color: '#ffffff',
   };
 
+  // 添加新按钮样式
+  const addFriendButtonStyle = {
+    ...buttonStyle,
+    backgroundColor: '#2196f3',
+    color: '#ffffff',
+  };
+
+  // 请求已发送按钮样式
+  const requestSentButtonStyle = {
+    ...buttonStyle,
+    backgroundColor: '#9e9e9e',
+    color: '#ffffff',
+    cursor: 'not-allowed'
+  };
+
   const handleAvatarClick = () => {
     if (selectedFriend?.isSelf) {
       setShowPhotoSelect(true);
@@ -114,6 +129,17 @@ const FriendDetail = ({ selectedFriend, onSendMessage, onAvatarChange }) => {
     // TODO: 实现删除好友功能
     console.log(`删除好友: ${selectedFriend.name}`);
     alert(`已删除好友 ${selectedFriend.name}`);
+  };
+
+  // 判断是否是好友
+  const isFriend = selectedFriend?.isFriend || 
+  (selectedFriend && !selectedFriend.isSelf && friendRequests.includes(selectedFriend.id));
+
+  // 添加发送好友请求函数
+  const handleSendRequest = () => {
+    if (onAddFriend) {
+      onAddFriend(selectedFriend);
+    }
   };
 
   if (!selectedFriend) {
@@ -162,16 +188,24 @@ const FriendDetail = ({ selectedFriend, onSendMessage, onAvatarChange }) => {
           </div>
         </div>
 
-        {/* 只有在不是自己的时候才显示发消息和删除好友按钮 */}
+        {/* 只有在不是自己的时候才显示发消息和删除好友按钮 ,如果该好友没有被添加则显示加好友按钮*/}
         {!selectedFriend.isSelf && (
-          <div style={buttonContainerStyle}>
-            <button style={sendMessageButtonStyle} onClick={handleSendMessage}>
-              发消息
+        <div style={buttonContainerStyle}>
+          {isFriend ? (
+            <>
+              <button style={sendMessageButtonStyle} onClick={onSendMessage}>
+                发消息
+              </button>
+              <button style={deleteButtonStyle} onClick={handleDeleteFriend}>
+                删除好友
+              </button>
+            </>
+          ) : (
+            <button style={addFriendButtonStyle} onClick={handleSendRequest}>
+              添加好友
             </button>
-            <button style={deleteButtonStyle} onClick={handleDeleteFriend}>
-              删除好友
-            </button>
-          </div>
+          )}
+        </div>
         )}
       </div>
 
