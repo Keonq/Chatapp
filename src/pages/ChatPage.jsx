@@ -4,7 +4,7 @@ import ChatInputBar from '../components/ChatInputBar.jsx';
 import ChatListPage from '../components/ChatListPage.jsx';
 import VideoCallModal from '../components/VideoCallModal.jsx';
 
-const ChatPage = ({ onNavigateToFriends, currentUser, selectedContact }) => {
+const ChatPage = ({ onNavigateToFriends, currentUser }) => {
   // 模拟不同用户的聊天数据
   const [allChats] = useState({
     1: [
@@ -103,27 +103,48 @@ const ChatPage = ({ onNavigateToFriends, currentUser, selectedContact }) => {
     setIsChatListOpen(false);
   };
 
-  // 粉色调样式定义
+  // 电脑端适配：水平布局容器
   const containerStyle = {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'row', // 水平布局
     height: '100vh',
     backgroundColor: '#fce4ec',
     fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    position: 'relative',
+    minWidth: '1200px', // 桌面端最小宽度
+    width: '100vw',
+    boxSizing: 'border-box',
+  };
+
+  // 左侧主聊天区域
+  const leftPanelStyle = {
+    flex: '1',
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: '#ffffff',
+    minWidth: '600px',
+    maxWidth: 'calc(100vw - 350px)', // 减去右侧面板宽度
+  };
+
+  // 右侧ChatList面板
+  const rightPanelStyle = {
+    width: '350px',
+    backgroundColor: '#ffffff',
+    borderLeft: '1px solid #f8bbd9',
+    display: isChatListOpen ? 'flex' : 'none',
+    flexDirection: 'column',
   };
 
   const headerStyle = {
     display: 'flex',
     alignItems: 'center',
-    padding: '12px 16px',
+    padding: '16px 20px',
     backgroundColor: '#ffffff',
     borderBottom: '1px solid #f8bbd9',
     boxShadow: '0 2px 4px rgba(233, 30, 99, 0.1)',
+    minHeight: '70px',
   };
 
   const logoStyle = {
-    flex: '1',
     width: '40px',
     height: '40px',
     backgroundColor: '#e91e63',
@@ -134,13 +155,13 @@ const ChatPage = ({ onNavigateToFriends, currentUser, selectedContact }) => {
     color: '#ffffff',
     fontSize: '18px',
     fontWeight: 'bold',
+    marginRight: '16px',
   };
 
   const contactInfoStyle = {
-    flex: '2',
+    flex: '1',
     display: 'flex',
     alignItems: 'center',
-    marginLeft: '16px',
   };
 
   const statusDotStyle = {
@@ -166,20 +187,13 @@ const ChatPage = ({ onNavigateToFriends, currentUser, selectedContact }) => {
     margin: '0 4px',
   };
 
+  // 聊天区域样式
   const chatAreaStyle = {
     flex: 1,
     display: 'flex',
-    justifyContent: 'center',
-    overflow: 'hidden',
-    padding: '0 16px',
-  };
-
-  const messagesContainerStyle = {
-    width: '100%',
-    maxWidth: '66.67%', // 2/3 宽度
-    display: 'flex',
     flexDirection: 'column',
     overflow: 'hidden',
+    padding: '0 20px',
   };
 
   const messagesScrollStyle = {
@@ -191,32 +205,26 @@ const ChatPage = ({ onNavigateToFriends, currentUser, selectedContact }) => {
     gap: '12px',
   };
 
-  const chatListButtonStyle = {
+  // ChatList切换按钮
+  const chatListToggleStyle = {
     position: 'fixed',
-    right: '20px',
+    right: isChatListOpen ? '360px' : '20px',
     top: '50%',
     transform: 'translateY(-50%)',
     width: '50px',
     height: '50px',
-    backgroundColor: '#ffffff',
+    backgroundColor: '#e91e63',
     borderRadius: '25px',
     border: 'none',
     cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    boxShadow: '0 4px 12px rgba(233, 30, 99, 0.2)',
-    transition: 'all 0.2s ease',
+    boxShadow: '0 4px 12px rgba(233, 30, 99, 0.3)',
+    transition: 'all 0.3s ease',
     zIndex: 100,
-  };
-
-  const triangleStyle = {
-    width: '0',
-    height: '0',
-    borderLeft: '8px solid #e91e63',
-    borderTop: '6px solid transparent',
-    borderBottom: '6px solid transparent',
-    marginLeft: '2px',
+    color: '#ffffff',
+    fontSize: '18px',
   };
 
   const NavButton = ({ onClick, children, title, isActive = false }) => {
@@ -243,64 +251,31 @@ const ChatPage = ({ onNavigateToFriends, currentUser, selectedContact }) => {
     );
   };
 
-  const ChatListButton = () => {
-    const [isHovered, setIsHovered] = useState(false);
 
-    return (
-      <button
-        style={{
-          ...chatListButtonStyle,
-          transform: `translateY(-50%) scale(${isHovered ? 1.05 : 1})`,
-        }}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        onClick={() => setIsChatListOpen(true)}
-        title="最近消息"
-      >
-        <div style={triangleStyle}></div>
-      </button>
-    );
-  };
 
   return (
     <div style={containerStyle}>
-      {/* 顶部栏 */}
-      <div style={headerStyle}>
-        {/* [1] 应用 Logo */}
-        <div style={logoStyle}>
-          C
+      {/* 左侧主聊天区域 */}
+      <div style={leftPanelStyle}>
+        {/* 顶部栏 */}
+        <div style={headerStyle}>
+          <div style={logoStyle}>C</div>
+          <div style={contactInfoStyle}>
+            <span style={{ fontSize: '16px', fontWeight: '500', color: '#212529' }}>
+              {contactInfo.name}
+            </span>
+            <div style={statusDotStyle}></div>
+          </div>
+          <NavButton onClick={handleNavigateToFriends} title="好友列表">
+            👥
+          </NavButton>
+          <NavButton onClick={handleRefreshChat} title="刷新聊天" isActive={true}>
+            💬
+          </NavButton>
         </div>
 
-        {/* [2] 聊天对象信息 */}
-        <div style={contactInfoStyle}>
-          <span style={{ fontSize: '16px', fontWeight: '500', color: '#212529' }}>
-            {contactInfo.name}
-          </span>
-          <div style={statusDotStyle}></div>
-        </div>
-
-        {/* [3] 好友列表按钮 */}
-        <NavButton
-          onClick={handleNavigateToFriends}
-          title="好友列表"
-        >
-          👥
-        </NavButton>
-
-        {/* [4] 聊天页面按钮（当前页） */}
-        <NavButton
-          onClick={handleRefreshChat}
-          title="刷新聊天"
-          isActive={true}
-        >
-          💬
-        </NavButton>
-      </div>
-
-      {/* 主聊天区 */}
-      <div style={chatAreaStyle}>
-        <div style={messagesContainerStyle}>
-          {/* 消息气泡区 */}
+        {/* 聊天区域 */}
+        <div style={chatAreaStyle}>
           <div style={messagesScrollStyle}>
             {messages.map((message) => (
               <ChatBubble
@@ -314,7 +289,6 @@ const ChatPage = ({ onNavigateToFriends, currentUser, selectedContact }) => {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* 消息输入栏 */}
           <ChatInputBar
             onSendMessage={handleSendMessage}
             onVideoCall={handleVideoCall}
@@ -324,15 +298,23 @@ const ChatPage = ({ onNavigateToFriends, currentUser, selectedContact }) => {
         </div>
       </div>
 
-      {/* 右侧消息列表触发按钮 */}
-      <ChatListButton />
+      {/* 右侧ChatList面板 */}
+      <div style={rightPanelStyle}>
+        <ChatListPage
+          isVisible={true}
+          onClose={() => setIsChatListOpen(false)}
+          onSwitchChat={handleSwitchChat}
+        />
+      </div>
 
-      {/* 右侧聊天列表弹出 */}
-      <ChatListPage
-        isVisible={isChatListOpen}
-        onClose={() => setIsChatListOpen(false)}
-        onSwitchChat={handleSwitchChat}
-      />
+      {/* ChatList切换按钮 */}
+      <button
+        style={chatListToggleStyle}
+        onClick={() => setIsChatListOpen(!isChatListOpen)}
+        title={isChatListOpen ? "关闭消息列表" : "打开消息列表"}
+      >
+        {isChatListOpen ? '❯' : '❮'}
+      </button>
 
       {/* 视频通话弹窗 */}
       <VideoCallModal

@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import ChatPage from './pages/ChatPage.jsx';
 import FriendsPage from './pages/FriendsPage.jsx';
+import SignUpPage from './pages/SignUpPage.jsx';
+import LoginCodePage from './pages/LoginCodePage.jsx';
+import LoginVcodePage from './pages/LoginVcodePage.jsx';
 
 // App主组件，负责全局状态管理
 function App() {

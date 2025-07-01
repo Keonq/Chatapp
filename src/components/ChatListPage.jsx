@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const ChatListPage = ({ isVisible, onClose, onSwitchChat }) => {
+const ChatListPage = ({ onClose, onSwitchChat }) => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
   // Mock 数据
@@ -47,81 +47,71 @@ const ChatListPage = ({ isVisible, onClose, onSwitchChat }) => {
     },
   ];
 
-  const overlayStyle = {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(233, 30, 99, 0.3)',
-    display: isVisible ? 'block' : 'none',
-    zIndex: 999,
-  };
-
-  const containerStyle = {
-    position: 'fixed',
-    top: 0,
-    right: isVisible ? 0 : '-320px',
-    width: '320px',
-    height: '100vh',
+  // 桌面端右侧面板样式
+  const panelStyle = {
+    height: '100%',
     backgroundColor: '#ffffff',
-    boxShadow: '-4px 0 20px rgba(233, 30, 99, 0.2)',
-    transition: 'right 0.3s ease-in-out',
-    zIndex: 1000,
     display: 'flex',
     flexDirection: 'column',
+    borderLeft: '1px solid #f8bbd9',
   };
 
   const headerStyle = {
-    padding: '16px 20px',
-    backgroundColor: '#e91e63',
-    color: '#ffffff',
-    fontSize: '18px',
-    fontWeight: '500',
+    padding: '20px',
+    borderBottom: '1px solid #f8bbd9',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
+    backgroundColor: '#fafafa',
+  };
+
+  const titleStyle = {
+    fontSize: '18px',
+    fontWeight: '600',
+    color: '#212529',
   };
 
   const closeButtonStyle = {
-    background: 'none',
+    width: '32px',
+    height: '32px',
     border: 'none',
-    color: '#ffffff',
-    fontSize: '20px',
+    backgroundColor: 'transparent',
+    borderRadius: '50%',
     cursor: 'pointer',
-    padding: '4px',
-    borderRadius: '4px',
-    transition: 'background-color 0.2s ease',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '18px',
+    color: '#666',
+    transition: 'all 0.2s ease',
   };
 
-  const listStyle = {
+  const listContainerStyle = {
     flex: 1,
     overflowY: 'auto',
-    padding: '8px 0',
+    padding: '10px 0',
   };
 
-  const chatItemStyle = {
-    display: 'flex',
-    padding: '12px 20px',
+  const chatItemStyle = (index) => ({
+    padding: '16px 20px',
+    borderBottom: '1px solid #f5f5f5',
     cursor: 'pointer',
-    borderBottom: '1px solid #fce4ec',
+    backgroundColor: hoveredIndex === index ? '#f8f9fa' : 'transparent',
     transition: 'background-color 0.2s ease',
-  };
-
-  const chatItemHoverStyle = {
-    backgroundColor: '#fce4ec',
-  };
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+  });
 
   const avatarStyle = {
-    width: '48px',
-    height: '48px',
+    width: '40px',
+    height: '40px',
     borderRadius: '50%',
-    backgroundColor: '#f8bbd9',
+    backgroundColor: '#f0f0f0',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     fontSize: '20px',
-    marginRight: '12px',
     flexShrink: 0,
   };
 
@@ -132,105 +122,96 @@ const ChatListPage = ({ isVisible, onClose, onSwitchChat }) => {
 
   const nameRowStyle = {
     display: 'flex',
-    alignItems: 'center',
     justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: '4px',
   };
 
   const nameStyle = {
-    fontSize: '15px',
+    fontSize: '14px',
     fontWeight: '500',
     color: '#212529',
   };
 
   const timestampStyle = {
     fontSize: '12px',
-    color: '#ad7a99',
+    color: '#999',
+  };
+
+  const messageRowStyle = {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   };
 
   const messageStyle = {
     fontSize: '13px',
-    color: '#ad7a99',
+    color: '#666',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
-    marginBottom: '2px',
+    flex: 1,
+    marginRight: '8px',
   };
 
   const unreadBadgeStyle = {
-    minWidth: '18px',
-    height: '18px',
-    borderRadius: '9px',
     backgroundColor: '#e91e63',
     color: '#ffffff',
+    borderRadius: '10px',
+    padding: '2px 6px',
     fontSize: '11px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft: '8px',
     fontWeight: '500',
-  };
-
-  const truncateMessage = (message, maxLength = 30) => {
-    return message.length > maxLength ? message.substring(0, maxLength) + '...' : message;
-  };
-
-  const handleChatClick = (chat) => {
-    onSwitchChat(chat.id, chat.name);
+    minWidth: '18px',
+    textAlign: 'center',
+    flexShrink: 0,
   };
 
   return (
-    <>
-      <div style={overlayStyle} onClick={onClose} />
-      <div style={containerStyle}>
-        <div style={headerStyle}>
-          <span>最近消息</span>
-          <button
-            style={closeButtonStyle}
-            onClick={onClose}
-            onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'}
-            onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
-          >
-            ✕
-          </button>
-        </div>
+    <div style={panelStyle}>
+      {/* 头部 */}
+      <div style={headerStyle}>
+        <div style={titleStyle}>最近消息</div>
+        <button
+          style={closeButtonStyle}
+          onClick={onClose}
+          onMouseEnter={(e) => {
+            e.target.style.backgroundColor = '#f0f0f0';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.backgroundColor = 'transparent';
+          }}
+        >
+          ×
+        </button>
+      </div>
 
-        <div style={listStyle}>
-          {chatList.map((chat, index) => (
-            <div
-              key={chat.id}
-              style={{
-                ...chatItemStyle,
-                ...(hoveredIndex === index ? chatItemHoverStyle : {}),
-              }}
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
-              onClick={() => handleChatClick(chat)}
-            >
-              <div style={avatarStyle}>
-                {chat.avatar}
+      {/* 聊天列表 */}
+      <div style={listContainerStyle}>
+        {chatList.map((chat, index) => (
+          <div
+            key={chat.id}
+            style={chatItemStyle(index)}
+            onMouseEnter={() => setHoveredIndex(index)}
+            onMouseLeave={() => setHoveredIndex(null)}
+            onClick={() => onSwitchChat(chat.id)}
+          >
+            <div style={avatarStyle}>{chat.avatar}</div>
+            <div style={contentStyle}>
+              <div style={nameRowStyle}>
+                <span style={nameStyle}>{chat.name}</span>
+                <span style={timestampStyle}>{chat.timestamp}</span>
               </div>
-              <div style={contentStyle}>
-                <div style={nameRowStyle}>
-                  <span style={nameStyle}>{chat.name}</span>
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <span style={timestampStyle}>{chat.timestamp}</span>
-                    {chat.unreadCount > 0 && (
-                      <div style={unreadBadgeStyle}>
-                        {chat.unreadCount}
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <div style={messageStyle}>
-                  {truncateMessage(chat.lastMessage)}
-                </div>
+              <div style={messageRowStyle}>
+                <span style={messageStyle}>{chat.lastMessage}</span>
+                {chat.unreadCount > 0 && (
+                  <span style={unreadBadgeStyle}>{chat.unreadCount}</span>
+                )}
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
-    </>
+    </div>
   );
 };
 

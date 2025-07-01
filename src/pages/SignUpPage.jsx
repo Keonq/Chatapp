@@ -121,13 +121,11 @@ const SignUpPage = ({ onNavigateToLogin, onRegisterSuccess }) => {
     }, 2000);
   };
 
-
-
   const handleLoginPage = () => {
     onNavigateToLogin();
   };
 
-  // 样式定义
+  // 桌面端适配样式
   const containerStyle = {
     display: 'flex',
     flexDirection: 'column',
@@ -137,43 +135,45 @@ const SignUpPage = ({ onNavigateToLogin, onRegisterSuccess }) => {
     backgroundColor: '#fce4ec',
     fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     padding: '20px',
+    minWidth: '1200px', // 桌面端最小宽度
   };
 
   const formContainerStyle = {
     backgroundColor: '#ffffff',
     borderRadius: '16px',
-    padding: '40px',
+    padding: '50px 60px', // 增加内边距
     boxShadow: '0 8px 32px rgba(233, 30, 99, 0.15)',
     width: '100%',
-    maxWidth: '400px',
+    maxWidth: '480px', // 增加最大宽度
+    minWidth: '400px', // 设置最小宽度
   };
 
   const titleStyle = {
-    fontSize: '24px',
+    fontSize: '28px', // 增大标题字体
     fontWeight: '600',
     color: '#e91e63',
     textAlign: 'center',
-    marginBottom: '30px',
+    marginBottom: '40px', // 增加底部间距
   };
 
   const inputGroupStyle = {
-    marginBottom: '20px',
+    marginBottom: '24px', // 增加间距
   };
 
   const labelStyle = {
     display: 'block',
-    fontSize: '14px',
+    fontSize: '16px', // 增大字体
     fontWeight: '500',
     color: '#424242',
-    marginBottom: '8px',
+    marginBottom: '10px', // 增加间距
   };
 
   const inputStyle = {
     width: '100%',
-    padding: '12px 16px',
+    padding: '14px 18px', // 增加内边距
     border: '1px solid #f8bbd9',
-    borderRadius: '8px',
-    fontSize: '14px',
+    borderRadius: '10px', // 调整圆角
+    fontSize: '16px', // 增大字体
     outline: 'none',
     transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
     boxSizing: 'border-box',
@@ -181,12 +181,12 @@ const SignUpPage = ({ onNavigateToLogin, onRegisterSuccess }) => {
 
   const inputFocusStyle = {
     borderColor: '#e91e63',
-    boxShadow: '0 0 0 2px rgba(233, 30, 99, 0.1)',
+    boxShadow: '0 0 0 3px rgba(233, 30, 99, 0.1)', // 增加阴影
   };
 
   const codeInputContainerStyle = {
     display: 'flex',
-    gap: '8px',
+    gap: '10px', // 增加间距
     alignItems: 'flex-end',
   };
 
@@ -196,12 +196,12 @@ const SignUpPage = ({ onNavigateToLogin, onRegisterSuccess }) => {
   };
 
   const sendCodeButtonStyle = {
-    padding: '12px 16px',
+    padding: '14px 20px', // 增加内边距
     backgroundColor: codeSent ? '#c8e6c9' : '#f8bbd9',
     color: codeSent ? '#4caf50' : '#e91e63',
     border: 'none',
-    borderRadius: '8px',
-    fontSize: '12px',
+    borderRadius: '10px',
+    fontSize: '14px', // 调整字体
     fontWeight: '500',
     cursor: codeSent ? 'default' : 'pointer',
     whiteSpace: 'nowrap',
@@ -210,16 +210,16 @@ const SignUpPage = ({ onNavigateToLogin, onRegisterSuccess }) => {
 
   const registerButtonStyle = {
     width: '100%',
-    padding: '12px 24px',
+    padding: '14px 28px', // 增加内边距
     backgroundColor: '#e91e63',
     color: '#ffffff',
     border: 'none',
-    borderRadius: '8px',
-    fontSize: '16px',
+    borderRadius: '10px',
+    fontSize: '16px', // 增大字体
     fontWeight: '500',
     cursor: 'pointer',
     transition: 'all 0.2s ease',
-    marginTop: '30px',
+    marginTop: '35px', // 增加顶部间距
   };
 
   const linkStyle = {
